@@ -1,0 +1,64 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: 14px;
+  color: #303133;
+  background-color: #f5f7fa;
+}
+
+.page-container {
+  padding: 20px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.toolbar .spacer {
+  flex: 1;
+}
+
+.money {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* 国内财务惯例：收入/盈余用红色，支出/亏损用绿色 */
+.money-income {
+  color: #f56c6c;
+}
+
+.money-expense {
+  color: #67c23a;
+}
+
+.money-neutral {
+  color: #303133;
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.chart {
+  width: 100%;
+  height: 320px;
+}
