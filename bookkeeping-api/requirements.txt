@@ -1,0 +1,15 @@
+# 个人记账管理系统后端依赖（实测版本，Python 3.13 验证通过）
+fastapi==0.143.1
+uvicorn[standard]==0.54.0
+SQLAlchemy==2.1.4
+PyMySQL==1.2.3
+pydantic==2.14.1
+pydantic-settings==2.16.0
+python-dotenv==1.2.4
+# JWT：python-jose 3.5.0 已包含 CVE-2024-33663 修复；cryptography 后端必须安装
+python-jose[cryptography]==3.5.0
+# 密码哈希：原计划使用 passlib[bcrypt]，但 passlib 1.7.4 与 bcrypt 4.1+ 不兼容
+# （passlib 后端自检触发 bcrypt 的 72 字节限制报错），故直接使用 bcrypt 5.x
+bcrypt==5.0.0
+# 仅测试需要（TestClient）
+httpx==0.28.1

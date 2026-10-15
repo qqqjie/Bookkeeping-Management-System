@@ -1,0 +1,17 @@
+target/
+*.class
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 含密码与密钥，绝不入库（.env.example 除外）
+.env
+.env.*
+!.env.example
+
+.idea/
+*.iml
+.vscode/
+logs/
+*.log
