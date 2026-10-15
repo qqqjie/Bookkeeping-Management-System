@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: bookkeeping-mysql
+    restart: unless-stopped
+    environment:
+      # 密码通过环境变量注入，仓库中不保存明文；使用前在 shell 中 export MYSQL_ROOT_PASSWORD
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?请在环境变量中设置 MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: bookkeeping
+      TZ: Asia/Shanghai
+    ports:
+      # 3307：避开本机现有 MySQL80 服务占用的 3306
+      - "3307:3307"
+    volumes:
+      # 数据卷与初始化脚本均落在 D 盘（按本机路径，其他机器请自行调整）
+      - D:/bookkeeping-mysql/data:/var/lib/mysql
+      - D:/bookkeeping-mysql/init:/docker-entrypoint-initdb.d:ro
+    command: --default-time-zone=+08:00
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-P", "3307", "-uroot", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 24
