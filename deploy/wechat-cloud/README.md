@@ -118,6 +118,7 @@ const res = await wx.cloud.callContainer({
 ```bash
 cd "D:/WorkBuddyCache/Bookkeeping Management System/bookkeeping-api"
 docker build -t bookkeeping-api:local .
-docker run --rm -p 9000:80 -e MYSQL_HOST=你的数据库地址 bookkeeping-api:local
+docker run --rm -p 9000:8080 -e MYSQL_HOST=你的数据库地址 bookkeeping-api:local
+# 容器内硬编码监听 8080（非 root 用户无法绑定 80），本地映射宿主 9000 → 容器 8080
 # 本机未安装 Docker，以上命令未经实测；镜像验证以云托管构建日志为准。
 ```

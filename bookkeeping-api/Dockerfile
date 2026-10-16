@@ -1,10 +1,14 @@
 # 个人记账管理系统 - 微信云托管部署镜像
 #
 # 构建上下文：bookkeeping-api/ 目录（与 requirements.txt、app/ 同级）
-# 微信云托管规范（官方文档核实）：
-#   1. 容器必须监听 PORT 环境变量指定的端口（默认 80），平台将外部 80/443 映射到该端口；
-#   2. 一个服务只能监听一个端口；不支持 Docker Compose、不支持部署有状态服务（数据库等）；
-#   3. 仅支持通过域名以 HTTP/HTTPS 调用。
+#
+# 端口说明（2026-10-16 按实际部署日志修正）：
+#   容器内 USER appuser 为非 root 用户，无法绑定 1024 以下的特权端口（80），
+#   且本环境存活探针探测的是 8080；因此硬编码监听 8080，不再依赖 PORT 环境变量。
+#   发布表单的“端口”字段须与容器监听端口一致，填 8080。
+# 微信云托管其他规范（官方文档核实）：
+#   1. 一个服务只能监听一个端口；不支持 Docker Compose、不支持部署有状态服务（数据库等）；
+#   2. 仅支持通过域名以 HTTP/HTTPS 调用；小程序端经 callContainer 调用无需配置合法域名。
 #
 # 基础镜像说明：requirements.txt 中 bcrypt 5.0.0 已核实发布 cp38-abi3
 # manylinux wheel（bcrypt-5.0.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl），
@@ -31,9 +35,9 @@ COPY app ./app
 RUN useradd --create-home appuser && chown -R appuser:appuser /app
 USER appuser
 
-# 云托管注入的 PORT 环境变量（默认 80）；/health 为健康检查端点
-ENV PORT=80
-EXPOSE 80
+# 硬编码监听 8080：非特权端口（>=1024），appuser 有权绑定；/health 为健康检查端点
+ENV PORT=8080
+EXPOSE 8080
 
-# exec 形式启动，确保容器停止时 uvicorn 能收到 SIGTERM 优雅退出
-CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-80}"]
+# exec 格式直接启动 uvicorn（不经 sh -c），容器停止时进程直接收到 SIGTERM 优雅退出
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
