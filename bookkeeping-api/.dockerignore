@@ -1,0 +1,22 @@
+# 敏感配置绝不进镜像（与 .gitignore 同一原则：.env 含数据库密码与 JWT 密钥）
+.env
+.env.*
+!.env.example
+
+# 本地开发与测试产物（运行时不需要）
+__pycache__/
+*.pyc
+.venv/
+venv/
+scripts/
+*.log
+*.sqlite3
+
+# 版本控制与 IDE
+.git/
+.gitignore
+.idea/
+.vscode/
+
+# 部署文档不属于镜像内容
+README.md
