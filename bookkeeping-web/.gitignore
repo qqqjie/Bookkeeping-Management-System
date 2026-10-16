@@ -1,6 +1,14 @@
+# 依赖与构建产物
 node_modules
 dist
 dist-ssr
 *.local
+
+# 含密钥等敏感配置，绝不入库（.env.example 除外）
+.env
+.env.*
+!.env.example
+
+# 系统与调试日志
 .DS_Store
 npm-debug.log*
